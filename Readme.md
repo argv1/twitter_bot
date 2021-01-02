@@ -14,9 +14,11 @@ pip3 install -r requirements.txt
 You also need ChromeDriver, which you can download [here](https://chromedriver.chromium.org/downloads) and store the execuable in the script folder.
 
 If you prefer Firefox, download geckodriver [here](https://github.com/mozilla/geckodriver/releases).
-and adjust the following line in main.py
+and adjust the following two line in main.py
 ```python
 browser = base_path / 'geckodriver.exe'
+...
+self.driver = webdriver.Firefox(executable_path=browser)
 ```
 
 now you can run the script:
