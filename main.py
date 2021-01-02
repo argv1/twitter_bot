@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 '''
-    Small script to follow twitter users
+    Follow twitter users by web automation using selenium
+    
 '''
 
 from configparser import ConfigParser
@@ -17,7 +18,7 @@ page_delay = 1
 
 # Define path and filename
 base_path = Path(__file__).parent.absolute()
-twitter_f = base_path / 'twitter_users.txt'
+twitter_f = base_path / 'twitter_users.txt'  
 log_f = base_path / 'run.log'
 config_f = base_path / 'config.ini'
 browser = base_path / 'chromedriver.exe'
@@ -44,51 +45,69 @@ fh.setFormatter(formatter)
 logger.info(f'Logger initialized. Log file {log_f} is being saved to {os.getcwd()}')
 
 
-class Twitter_Bot:
-    def __init__(self):
+class TwitterBot:
+    def __init__(self, username, password, ):
         logger.info('Create Clas and open chrome')
-        self.driver = None
-
-    def open_browser(self):
         self.driver = webdriver.Chrome(executable_path=browser)
         self.driver.maximize_window()
+        self.username = username
+        self.__password = password
+        self.subscriptions = 0
  
-    def login_to_twitter(self, username, password):
+    def __login_to_twitter(self):
         logger.info('Navigating to twitter')
         try:
             self.driver.get('https://twitter.com/login')
 
             username_field = self.driver.find_element_by_name('session[username_or_email]')
-            password_field = self.driver.find_element_by_name('session[password]')
-
-            username_field.send_keys(username)
+            username_field.clear()
+            username_field.send_keys(self.username)
             self.driver.implicitly_wait(page_delay)
-            
-            password_field.send_keys(password)
+
+            password_field = self.driver.find_element_by_name('session[password]')
+            password_field.clear()
+            password_field.send_keys(self.__password)
             self.driver.implicitly_wait(page_delay)
             password_field.submit()
             logger.info('Login successful')
         
-        except:
+        except FailedLogin:
             print('Not able to login!')
             sys.exit(1)
 
-    def subscribe(self, users):
+    def __subscribe(self, users):
         for user in users:
             try:
                 self.driver.get(f'https://twitter.com/intent/user?screen_name={user}')
                 self.driver.implicitly_wait(page_delay)
                 self.driver.find_element_by_xpath('//div[@data-testid="confirmationSheetConfirm"]').click()
                 logger.info(f'Successful subscribed to @{user}')
-            except:   #mehrere exceptions, eine für bereits aboniert, eine für seite bzw user gibt es nicht
-                logger.info(f'Subscribtion to @{user} not possible')     
-                # wenn ich erneutes login auslösen will brauche ich die credentials, kann ich die vererben?          
+                self.subscriptions += 1
+            except:   
+                logger.info(f'Subscribtion to @{user} not possible') 
+                
+                
+                #self.__login_to_twitter()   
+                #users.append(user)
+                # check ob erneuter login benötigt wird
+                # check ob user existiert
+                # check ob bereits aboniert oder nicht
+        logger.info(f'Successfully subscribed to {self.subscriptions} out of {len(users)}') 
+        self.driver.implicitly_wait(page_delay)
 
-    def run(self, username, password, users):
-        self.open_browser() 
-        self.login_to_twitter(username, password)
-        self.subscribe(users)
+    def run(self, users):
+        self.__login_to_twitter()
+        self.__subscribe(users)
         self.driver.quit()
+
+    def __str__(self):
+        return f'Twitter Bot'
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __len__(self):
+        return f'{self.subscriptions} successful subscriptions'
 
 def create_list(lines):
     entries = []
@@ -117,14 +136,14 @@ def main():
         lines = f.read().splitlines()
     users = create_list(lines)
     
-    while True:
-        # create Twitter Bot
-        twitter = Twitter_Bot()
-        try:
-            # login and subscribe
-            twitter.run(username, password, users)
-        except:
-            twitter.driver.quit()
+    # create Twitter Bot
+    twitter = TwitterBot(username, password)
+
+    try:
+        # login and subscribe
+        twitter.run(users)
+    except:
+        twitter.driver.quit()
 
 if __name__  == '__main__':
     main()
