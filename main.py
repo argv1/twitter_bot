@@ -84,7 +84,7 @@ class TwitterBot:
                 logger.info(f'Successful subscribed to @{user}')
                 self.subscriptions += 1
             except:   
-                logger.info(f'Subscribtion to @{user} not possible') 
+                logger.info(f'Subscribtion to @{user} not possible.') 
                 
                 
                 #self.__login_to_twitter()   
@@ -92,7 +92,7 @@ class TwitterBot:
                 # check ob erneuter login benötigt wird
                 # check ob user existiert
                 # check ob bereits aboniert oder nicht
-        logger.info(f'Successfully subscribed to {self.subscriptions} out of {len(users)}') 
+        logger.info(f'Successfully subscribed to {self.subscriptions} out of {len(users)}.') 
         self.driver.implicitly_wait(page_delay)
 
     def run(self, users):
@@ -107,11 +107,11 @@ class TwitterBot:
         return self.__str__()
 
     def __len__(self):
-        return f'{self.subscriptions} successful subscriptions'
+        return f'{self.subscriptions} successful new subscriptions.'
 
 def create_list(lines):
     entries = []
-    for line in lines:
+    for line in set(lines):
         users = line.split('@')
         users.pop(0)
         entries.extend(users)
