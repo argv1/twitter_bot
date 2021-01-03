@@ -1,8 +1,8 @@
-# twitter_follow
+# Simple Twitter Bot
 ======================
 
 ## Purpose
-Subscribe to twitter users by selenium webdriver
+Simple twitter bot to follow users by selenium webdriver
 
 ## Usage
 run pip to ensure all requirements are fulfilled
@@ -25,6 +25,10 @@ now you can run the script:
 ```bash
 main.py
 ```
+
+## Future
+Since I move to OOP, I will probably add some more features like mass liking by hashtag.
+Feel free to improve and fork this small script.
 
 ## License
 This code is licensed under the [GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/). 
