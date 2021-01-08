@@ -32,5 +32,5 @@ Feel free to improve and fork this small script.
 
 ## License
 This code is licensed under the [GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/). 
-For more details, please take a look at the [LICENSE file](https://github.com/argv1/twitter_follow/blob/master/LICENSE).
+For more details, please take a look at the [LICENSE file](https://github.com/argv1/twitterbot/blob/master/LICENSE).
 
