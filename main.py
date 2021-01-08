@@ -95,6 +95,7 @@ class TwitterBot:
                 if(len(elem) > 0 and (elem[0].text == 'Etwas ist schiefgelaufen.')):
                     logger.info(f'Relogin required')
                     users.append(user)
+                    time.sleep(120)            
                     self.__login_to_twitter()
                     continue
 
