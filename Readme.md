@@ -2,7 +2,7 @@
 ======================
 
 ## Purpose
-Simple twitter bot to follow users by selenium webdriver
+Simple selenium prove of concept twitter bot to follow users by selenium webdriver. Please be aware this script does not use tweepy.
 
 ## Usage
 run pip to ensure all requirements are fulfilled
