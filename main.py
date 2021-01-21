@@ -50,7 +50,7 @@ def create_list(lines):
         [entries.append(user.replace(' ','')) for user in users]     
     return entries
 
-def main():
+def credentials():
     # get credentials
     config_file = ConfigParser()
     config_file.read(config_f)
@@ -63,6 +63,10 @@ def main():
         password = settings['Password']
     except KeyError:
         password = getpass(f'[?] Twitter Password for {username}: ')
+    return username, password
+
+def main():
+    username, password = credentials()
 
     # prepare file with user names
     with twitter_f.open('r') as f:
